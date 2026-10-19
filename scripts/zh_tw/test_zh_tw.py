@@ -15,6 +15,7 @@ from check_tw import json_errors, javascript_errors, snbt_errors, string_errors,
 from converter import Converter, load_terms
 from fetch_translation import RemoteZip, allowed
 from formats import markers, snbt_leaves
+from quest_images import audit, load_baseline
 
 
 class ConversionTests(unittest.TestCase):
@@ -103,6 +104,48 @@ class ConversionTests(unittest.TestCase):
         out = self.builder.snbt(rel, raw)
         self.assertIn('機器'.encode(), out)
         self.assertFalse(snbt_errors(rel, raw, out))
+
+    def test_stale_quest_image_removed(self):
+        rule = load_baseline()['repairs'][0]
+        rel = rule['file']
+        raw = ('{' + rule['field'][0] + ': ["原本文字" ' + json.dumps(rule['source']) + ']}').encode()
+        out = self.builder.snbt(rel, raw)
+        values = {p: t.value for p, t in snbt_leaves(out.decode())}
+        self.assertEqual(values[tuple(rule['field'])], '')
+        self.assertEqual(values[(rule['field'][0], 0)], '原本文字')
+        self.assertFalse(snbt_errors(rel, raw, out))
+        self.assertTrue(snbt_errors(rel, raw, raw))
+
+    def test_image_repair_source_drift_fails(self):
+        rule = load_baseline()['repairs'][0]
+        changed = rule['source'].replace('width:200', 'width:201')
+        raw = ('{' + rule['field'][0] + ': ["原本文字" ' + json.dumps(changed) + ']}').encode()
+        with self.assertRaises(ValueError):
+            self.builder.snbt(rule['file'], raw)
+
+    def test_other_image_markers_cannot_disappear(self):
+        rel = 'config/ftbquests/quests/lang/zh_cn/test.snbt'
+        raw = b'{"quest.X.quest_desc":["{image:atm:textures/other.png width:20}"]}'
+        self.assertEqual(self.builder.snbt(rel, raw), raw)
+        self.assertTrue(snbt_errors(rel, raw, b'{"quest.X.quest_desc":[""]}'))
+
+    def test_image_index_separates_external_dependencies(self):
+        baseline = {'pack_version': '8.3', 'commit': 'test', 'repairs': [],
+                    'pack_assets': {'atm:official.png': 'kubejs/assets/atm/official.png'},
+                    'case_mismatches': {'atm:case.png': ['kubejs/assets/atm/CASE.png']}}
+        text = '{k:["{image:atm:bundled.png}" "{image:atm:official.png}" "{image:atm:case.png}" "{image:atm:missing.png}" "{image:mod:external.png}"]}'
+        target = {'config/ftbquests/quests/lang/zh_tw/test.snbt': text.encode(),
+                  'RP/assets/atm/bundled.png': b'fixture'}
+        report = audit({}, target, baseline)
+        self.assertEqual(len(report['entries']), 5)
+        self.assertEqual(report['counts']['包內有檔'], 1)
+        self.assertEqual(report['counts']['翻譯包與官方索引均無檔，待查'], 1)
+        self.assertEqual(report['status'], '部份未驗證')
+
+    def test_missing_image_baseline_fails(self):
+        with patch('quest_images.BASELINE', Path('absent-image-baseline.json')):
+            with self.assertRaises(FileNotFoundError):
+                Builder()
 
     def test_javascript_non_text_and_keys(self):
         rel = 'kubejs/client_scripts/test.js'

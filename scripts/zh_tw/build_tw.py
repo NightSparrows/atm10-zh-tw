@@ -16,6 +16,7 @@ from importlib.metadata import version
 from converter import Converter
 from formats import (HAN, VISIBLE, decode_string, js_decode, js_encode,
                      js_strings, js_display_slot, json_load, leaves, replace_spans, snbt_leaves)
+from quest_images import load_baseline, repair_for
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / 'src/zh_tw'
@@ -141,6 +142,8 @@ class Builder:
         self.overrides = json_load((DATA / 'overrides.json').read_bytes())['lang']
         self.changes = []
         self.repairs = []
+        self.quest_image_baseline = load_baseline()
+        self.quest_image_repairs = []
 
     def display(self, value, rel, path, command_document=False):
         if not HAN.search(value) or (text_is_data(value) and not command_document):
@@ -196,8 +199,18 @@ class Builder:
         edits = []
         for path, token in snbt_leaves(text):
             if token.quoted and snbt_visible(rel, path):
-                output = self.display(token.value, rel, path)
+                repair = repair_for(rel, path, token.value, self.quest_image_baseline)
+                if repair:
+                    output = repair['replacement']
+                    self.quest_image_repairs.append(repair)
+                    self.changes.append({'file': rel, 'field': list(path), 'source': token.value,
+                                         'output': output, 'reason': repair['reason']})
+                else:
+                    output = self.display(token.value, rel, path)
                 if output != token.value:
+                    if repair:
+                        edits.append((token.start, token.end, json.dumps(output, ensure_ascii=False)))
+                        continue
                     # 保留 SNBT 的非 JSON 跳脫，如任務標題中的 \&。
                     body = token.raw[1:-1]
                     converted = self.conv.convert(body)
@@ -313,6 +326,7 @@ def build(source, output, report_dir, locked=True):
     manifest = {'source_sha256': sha(source.read_bytes()), 'output_sha256': sha(output.read_bytes()),
                 'opencc': version('OpenCC'), 'source_files': len(files), 'output_files': len(converted),
                 'changed_entries': len(builder.changes), 'repairs': builder.repairs,
+                'quest_image_repairs': builder.quest_image_repairs,
                 'omitted_non_translation_files': omitted, 'sources_unchanged': True,
                 'files': [{'source': k, 'output': rename(k), 'source_sha256': sha(v),
                            'output_sha256': sha(converted[rename(k)])} for k, v in sorted(files.items())]}

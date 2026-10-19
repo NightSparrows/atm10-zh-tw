@@ -73,6 +73,8 @@ def json_errors(rel, a, b):
 
 def snbt_errors(rel, a, b):
     from build_tw import snbt_visible
+    from quest_images import load_baseline, repair_for
+    image_baseline = load_baseline()
     source, target = a.decode('utf-8-sig'), b.decode('utf-8-sig')
     A, B = snbt_leaves(source), snbt_leaves(target)
     errors = []
@@ -81,7 +83,12 @@ def snbt_errors(rel, a, b):
     masks_a, masks_b = [], []
     for (path, x), (_, y) in zip(A, B):
         if snbt_visible(rel, path) and x.quoted:
-            errors.extend(string_errors(x.value, y.value, f'{rel}:{path}'))
+            repair = repair_for(rel, path, x.value, image_baseline)
+            if repair:
+                if y.value != repair['replacement']:
+                    errors.append(f'{rel}:{path}：過期圖片引用未修正')
+            else:
+                errors.extend(string_errors(x.value, y.value, f'{rel}:{path}'))
             masks_a.append((x.start, x.end, '"TEXT"'))
             masks_b.append((y.start, y.end, '"TEXT"'))
         elif x.raw != y.raw:
@@ -235,6 +242,9 @@ def validate(source, target, output_zip, report_dir):
             if (root/name).read_bytes() != raw:
                 errors.append(f'ZIP 解壓內容不符：{name}')
     residue = residuals(target)
+    from quest_images import audit
+    image_references = audit(source, target)
+    errors.extend(image_references['errors'])
     report = {'status': '通過' if not errors else '失敗', 'errors': errors,
               'source_files': len(source), 'output_files': len(target), 'missing_files': missing,
               'extra_files': extra, 'counts': dict(counts),
@@ -245,8 +255,9 @@ def validate(source, target, output_zip, report_dir):
                              '圖片文字與台灣字形', 'Windows PowerShell 安裝器執行',
                              '多人伺服器同步與權限', '獎杯等以顯示名形成的動態翻譯鍵'],
               'residual_candidates': residue['occurrences'], 'images_pending': len(images)}
+    report['quest_image_references'] = {'status': image_references['status'], 'counts': image_references['counts']}
     for name, data in [('validation.json', report), ('simplified-residue.json', residue),
-                       ('images-manual.json', images)]:
+                       ('images-manual.json', images), ('quest-image-references.json', image_references)]:
         (report_dir/name).write_text(json.dumps(data, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
     return report
 
