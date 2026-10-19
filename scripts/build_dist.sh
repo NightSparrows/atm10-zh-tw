@@ -20,6 +20,15 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 VERSION="${1:?用法: build_dist.sh <补丁版本号，如 r12> [整合包版本，默认全部]}"
+LANGUAGE="${3:-zh_cn}"
+if [ "$LANGUAGE" = "zh_tw" ]; then
+  [ "${2:-}" = "8.3" ] || { echo '繁中建置只接受 ATM10 8.3'; exit 1; }
+  SOURCE="${4:?繁中建置需要已完成的 8.3 簡中 Client ZIP}"
+  TW_PYTHON="${ATM_TW_PYTHON:-python3}"
+  exec "$TW_PYTHON" scripts/zh_tw/build_tw.py "$SOURCE" \
+    --out "dist/atm10-zh_tw-client-${VERSION}-atm8.3.zip"
+fi
+[ "$LANGUAGE" = "zh_cn" ] || { echo "不支援的語言：$LANGUAGE"; exit 1; }
 # 目标整合包版本：没给就取 versions/ 下所有声明过的（**只认仓库里有的**，
 # 绝不去 CurseForge 现查——那样 ATM 一发新版 CI 就会自动构建一个没验证过的包）
 MC_VERSIONS="${2:-$(ls -d versions/[0-9]* 2>/dev/null | xargs -n1 basename | tr '\n' ' ')}"

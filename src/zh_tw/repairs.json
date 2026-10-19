@@ -1,0 +1,10 @@
+{
+  "assets/herbsandharvest/books/chapters/grapes.json": {
+    "sha256": "7e099a93bee6bbdaf8fadc0158cb0ffae438685b37d4fc71e0e6b21b7debb6d9",
+    "repair": "移除第一份完整 JSON 後多餘的 ] 與 }。"
+  },
+  "assets/herbsandharvest/books/chapters/herbs.json": {
+    "sha256": "d687b835b0fc486d3e0e62f21b31466d9bda52b14609bb220c950ffe6b870060",
+    "repair": "移除第一份完整 JSON 後多餘的 ] 與 }。"
+  }
+}

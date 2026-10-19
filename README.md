@@ -5,6 +5,10 @@
 
 # All the Mods 10 汉化补丁 —— 绿油油版
 
+本 Fork 提供 ATM10 8.3 的繁體中文（台灣）建置。
+建置方式與限制見 [繁中建置說明](docs/zh_tw.md)。
+簡體中文來源與以下上游說明保留。
+
 [![GitHub](https://img.shields.io/badge/GitHub-chiba233%2Fatm10--zh--cn-181717?logo=github)](https://github.com/chiba233/atm10-zh-cn)
 [![Contributing](https://img.shields.io/badge/Contributing-guide-blue.svg)](./CONTRIBUTING.md)
 [![Security](https://img.shields.io/badge/Security-policy-red.svg)](./SECURITY.md)

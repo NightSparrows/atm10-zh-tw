@@ -1,0 +1,32 @@
+name: 繁中離線建置
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  translation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: 安裝鎖定的建置依賴
+        run: python -m pip install --require-hashes -r requirements-zh_tw.lock
+      - name: 轉換器反例測試
+        run: python scripts/zh_tw/test_zh_tw.py
+      - name: 取得已發布的翻譯檔
+        run: python scripts/zh_tw/fetch_translation.py
+      - name: 建置與靜態驗證
+        run: bash scripts/build_dist.sh r27 8.3 zh_tw build/inputs/atm10-zh_cn-client-r27-atm8.3.zip
+      - name: 重複建置驗證
+        run: python scripts/zh_tw/reproduce.py build/inputs/atm10-zh_cn-client-r27-atm8.3.zip dist/atm10-zh_tw-client-r27-atm8.3.zip
+      - uses: actions/upload-artifact@v6
+        with:
+          name: atm10-zh_tw-client-atm8.3
+          path: dist/
