@@ -16,13 +16,21 @@ from formats import (HAN, PROTECTED, js_decode, js_strings, js_display_slot, js_
                      leaves, markers, replace_spans, snbt_leaves)
 
 ASCII = re.compile(r'[\x00-\x7f]+')
+MOD_NAMES = {cn: en for cn, en in json_load(
+    (Path(__file__).resolve().parents[2] / 'src/zh_tw/terms.json').read_bytes()
+)['groups']['保留英文的模組名稱'].items() if not cn.startswith('_')}
 
 
 def string_errors(a, b, label):
     errors = []
     if markers(a) != markers(b):
         errors.append(f'{label}：格式參數或特殊標記改變')
-    if ASCII.findall(a) != ASCII.findall(b):
+    # 英文模組名稱只准替換顯示文字，特殊標記仍逐字比對。
+    parts = PROTECTED.split(a)
+    for i in range(0, len(parts), 2):
+        for cn, en in MOD_NAMES.items():
+            parts[i] = parts[i].replace(cn, en)
+    if ASCII.findall(''.join(parts)) != ASCII.findall(b):
         errors.append(f'{label}：ASCII 內容改變')
     return errors
 

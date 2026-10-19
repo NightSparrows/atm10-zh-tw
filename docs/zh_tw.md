@@ -85,6 +85,10 @@ build/venv-zh_tw/bin/python scripts/zh_tw/build_tw.py build/inputs/atm10-zh_cn-c
 剩餘文字以 OpenCC `s2twp` 轉換。
 `terms.json` 的所有詞組與規則都會移植。
 `overrides.json` 提供逐鍵人工覆寫。
+Just Dire Things 的模組名稱保留英文。
+名稱依據為 [MC 百科條目](https://www.mcmod.cn/class/14797.html)。
+章節、任務、正文與模組分類套用同一規則。
+ASCII 驗證只放行詞表列明的名稱替換。
 本流程不下載原版語言檔或模組 JAR。
 因此不套用 Fork 的原版名稱字典與 JAR 補位。
 

@@ -41,6 +41,32 @@ class ConversionTests(unittest.TestCase):
         self.assertIn('獄髓', result)
         self.assertFalse(string_errors(source, result, 'text'))
 
+    def test_english_mod_name_and_markup(self):
+        source = '&3&l可怖之物&r的机器 %1$s /give @s justdirethings:tool'
+        result = self.builder.conv.convert(source)
+        self.assertEqual(result, '&3&lJust Dire Things&r的機器 %1$s /give @s justdirethings:tool')
+        self.assertFalse(string_errors(source, result, 'name'))
+        for bad in [result.replace('Just Dire Things', 'Dire Things'),
+                    result.replace('justdirethings:tool', 'justdirethings:other'),
+                    result.replace('%1$s', '%s'), source]:
+            self.assertTrue(string_errors(source, bad, 'name'))
+
+    def test_mod_name_in_protected_content_stays_unchanged(self):
+        source = '可怖之物 `可怖之物` $(l:可怖之物) https://example.com/可怖之物'
+        result = self.builder.conv.convert(source)
+        self.assertEqual(result, 'Just Dire Things `可怖之物` $(l:可怖之物) https://example.com/可怖之物')
+        self.assertFalse(string_errors(source, result, 'name'))
+        self.assertTrue(string_errors(source, result.replace('`可怖之物`', '`Just Dire Things`'), 'name'))
+
+    def test_mod_name_only_changes_display_data(self):
+        rel = 'config/ftbquests/quests/chapters/name.snbt'
+        raw = '{id:"可怖之物" dependencies:["ABCD"] title:"可怖之物"}'.encode()
+        out = self.builder.snbt(rel, raw)
+        self.assertIn('id:"可怖之物"'.encode(), out)
+        self.assertIn(b'title:"Just Dire Things"', out)
+        self.assertFalse(snbt_errors(rel, raw, out))
+        self.assertTrue(snbt_errors(rel, raw, out.replace('id:"可怖之物"'.encode(), b'id:"Just Dire Things"')))
+
     def test_escaped_json_and_chinese_keys(self):
         raw = json.dumps({'简体键': '下界合金 %1$s'}).encode()
         rel = 'RP/assets/demo/lang/zh_cn.json'
