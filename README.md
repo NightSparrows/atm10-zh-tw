@@ -1,186 +1,121 @@
 <p align="center">
   <img src="src/pack/pack.png" width="96" height="96"
-       alt="ATM10 汉化补丁「绿油油版」资源包图标">
+       alt="ATM10 翻譯包圖示，沿用簡中上游素材">
 </p>
 
-# All the Mods 10 汉化补丁 —— 绿油油版
+# All the Mods 10 繁體中文（台灣）
 
-本 Fork 提供 ATM10 8.3 的繁體中文（台灣）建置。
-建置方式與限制見 [繁中建置說明](docs/zh_tw.md)。
-簡體中文來源與以下上游說明保留。
+本 Fork 提供 **ATM10 8.3** 的 `zh_tw` Client 翻譯包。
+以簡中上游的 8.3 資源為底本，使用 OpenCC `s2twp` 轉換。
+轉換時套用台灣術語與人工修正。
+簡中來源與原建置架構保留，可在同步上游後重新建置。
 
-[![GitHub](https://img.shields.io/badge/GitHub-chiba233%2Fatm10--zh--cn-181717?logo=github)](https://github.com/chiba233/atm10-zh-cn)
-[![Contributing](https://img.shields.io/badge/Contributing-guide-blue.svg)](./CONTRIBUTING.md)
-[![Security](https://img.shields.io/badge/Security-policy-red.svg)](./SECURITY.md)
-[![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](./LICENSE)
+[貢獻指南](CONTRIBUTING.md) · [建置說明](docs/zh_tw.md) · [授權](LICENSE)
 
-All the Mods 10 的简体中文汉化补丁，**同时支持 7.0 / 7.1 / 7.2 / 7.3 / 8.0 / 8.1 / 8.2 / 8.3**，每个整合包版本一个专属包。
+## 來源與署名
 
-> **装这一个就够。** 语言文件 18.4 万余条、任务书、19 本模组手册、467 种蜂、
-> 799 条结构名、201 张图片艺术字都在里面，是完整的一份，不是叠加在别家之上的补充包。
-> **不需要**先装 BBSMC 或任何其他汉化当前置——同时装两份会互相覆盖。
-> 整合包装好后直接装本包即可。
-
-## 兼容版本
-
-Minecraft 均为 1.21.1。**必须下载与你整合包版本对应的那个包，不能跨版本用。**
-
-| 整合包版本 | NeoForge |
+| 來源 | 本 Fork 使用的內容 |
 |---|---|
-| All the Mods 10 **8.3** | 21.1.259 |
-| All the Mods 10 **8.2** | 21.1.251 |
-| All the Mods 10 **8.1** | 21.1.249 |
-| All the Mods 10 **8.0** | 21.1.247 |
-| All the Mods 10 **7.3** | 21.1.247 |
-| All the Mods 10 **7.2** | 21.1.241 |
-| All the Mods 10 **7.1** | 21.1.234 |
-| All the Mods 10 **7.0** | 21.1.228 |
+| [chiba233/atm10-zh-cn](https://github.com/chiba233/atm10-zh-cn) | 簡中譯文、資源、版本資料、建置系統與安裝器 |
+| [上游 r27](https://github.com/chiba233/atm10-zh-cn/releases/tag/vr27) | ATM10 8.3 的簡中 Client 翻譯底本 |
+| [George15526/atm10-zh-tw-fork](https://github.com/George15526/atm10-zh-tw-fork) | 繁中轉換核心、台灣術語與上下文規則 |
+| [AllTheMods/ATM-10](https://github.com/AllTheMods/ATM-10) | 核對 8.3 任務原文與資源路徑 |
 
-## 我该下载哪个包？
+簡中上游整理與補譯：**星野夢華（Hoshino Yumeka）**。
+上游引用的 CFPA 社群與各模組譯文，署名見 [CREDITS.md](CREDITS.md)。
+該文件保留上游簡中包的技術說明與統計口徑。
+本繁中包的內容與限制以本頁及包內 README 為準。
 
-[Releases](../../releases) 里每个版本有两个文件，**认文件名里的 `client` / `server`**：
+使用的來源版本與鎖定方式見 [繁中建置說明](docs/zh_tw.md#架構與來源)。
+Just Dire Things 的名稱依據為 [MC 百科條目](https://www.mcmod.cn/class/14797.html)。
+章節、任務標題與正文引用均保留 `Just Dire Things`。
 
-| 文件名里含 | 装在哪 | 谁需要 |
-|---|---|---|
-| `client` | 你自己电脑上的 ATM10 实例 | **所有人都要装。** 单人玩家只装这一个 |
-| `server` | 服务器那台机器 | 只有**开服的人**要装 |
+## 適用範圍
 
-例：`atm10-zh_cn-client-R25-atm8.1.zip`
+- 只支援 **ATM10 8.3 客戶端**，語言代碼為 `zh_tw`。
+- 包含任務書、模組語言、手冊及 KubeJS 等翻譯資源。
+- 沿用 8.3 底本，不套用 8.1 的設定或任務資料。
+- 本包不附帶 Mod JAR。
+- 英文搜尋與雙語 Tooltip 由 PolyglotTooltip 處理。
 
-文件名里有两个版本号：`R25` 是**补丁的版本**，`atm8.1` 才是**你的整合包版本**。认后者下载。
+## 安裝
 
-**单人玩家只装客户端包**——单人时你的客户端兼任服务端，蜂笼迁移脚本也已包含在客户端包里。
+使用檔名含 `zh_tw`、`client` 與 `atm8.3` 的 ZIP。
+建置產物位於 `dist/`。
 
-⚠️ **别把客户端包丢到服务器上**，会让所有玩家进服时刷 `error creating crop with id null`。
+1. 關閉遊戲，備份存檔與設定。
+2. 解壓 ZIP，將 `atm10-zh_tw-client` 放進遊戲目錄。
+   遊戲目錄是含有 `mods/` 與 `options.txt` 的那一層。
+3. Windows 執行 `install-windows.bat`。
+   macOS / Linux 在安裝資料夾執行 `bash install.sh apply`。
+4. 若出現選單，選 `[1] 应用汉化`。
+5. 若詢問是否安裝 JEI 拼音搜尋，按 Enter 或選 `N`。
+   本包沒有附帶該模組。
+6. 遊戲內選擇「繁體中文（台灣）」。
+7. 將 `ATM10-zh_tw-8.3.zip` 放到已啟用資源包的最上方。
 
-## 客户端安装
-
-### 1. 找到实例文件夹
-
-含 `mods` 文件夹和 `options.txt` 的那一层。启动器里右键实例 →「打开文件夹」。
-路径通常长这样：`...\.minecraft\versions\All the Mods 10\`
-
-### 2. 解压，把整个文件夹放进去
-
-解压后得到一个 `atm10-zh_cn-client` 文件夹，**整个拖进实例目录**：
-
-```
-All the Mods 10\          ← 实例根目录
-├─ mods\
+```text
+遊戲目錄/
+├─ mods/
 ├─ options.txt
-└─ atm10-zh_cn-client\    ← 刚放进来的
-   ├─ 双击安装-Windows.bat
+└─ atm10-zh_tw-client/
+   ├─ install-windows.bat
    ├─ install.sh
+   ├─ README.zh_tw.md
    └─ ...
 ```
 
-放错地方也没关系，安装器会提示你手动输入路径。
+Client ZIP 是安裝包，不能整份當作資源包啟用。
+安裝器介面沿用上游簡中，安裝內容使用 `zh_tw`。
+安裝器會先備份即將覆蓋的檔案。
+需要復原時，執行安裝器並選 `[3] 恢复备份`。
+更新繁中包時，解壓新版後重新執行安裝器。
+本包停用安裝器的自動更新查詢。
 
-> ⚠️ **尽量不要把压缩包内容直接解压覆盖到实例根目录**。那样虽然也能用，但**没有任何备份**，之后无法一键回退。
+## 建置與驗證
 
-### 3. 运行安装器
+在倉庫根目錄執行：
 
-- **Windows**：双击 `双击安装-Windows.bat`
-- **macOS / Linux**：终端里 `bash install.sh`
-
-选 **[1] 应用汉化**。它会备份原文件、复制汉化文件、自动启用资源包，并问你要不要装可选的 JEI 拼音搜索（能用拼音首字母搜物品，推荐装）。
-
-### 4. 确认装上了
-
-**资源包必须在「已选」一侧的最顶部，否则大部分汉化都不生效。**
-
-进游戏 → 选项 → 资源包，确认「ATM10汉化包-<你的版本>」在最顶部；回主菜单，按钮应该是中文。
-
-<p align="center">
-  <img src="img/img.png" alt="资源包要在「已选」一侧的最顶部" width="720">
-</p>
-
-忘了这一步也不至于蒙在鼓里：进世界几秒后聊天栏会提示你资源包没生效。一切正常时它不会说话。
-
-### 升级 / 卸载
-
-再运行一次安装器：**[u] 一键下载并更新**（自动挑对应你整合包版本的包，校验 SHA-256 后安装），或 **[3] 恢复备份** 回到安装前。
-
-## 服务端安装
-
-**只有开服的人需要。单人玩家跳过。**
-
-下载对应版本的 `...-server-...zip`，把包内的 `mods/` `vaultpatcher/` `kubejs/` `config/` 覆盖到服务器数据目录，然后**完整重启服务端**。详见包内的 `请安装前务必看我.md`。
-
-装完后玩家仍需各自安装客户端包——服务器管不了你屏幕上的物品名。
-
-## 常见问题
-
-**装完还是英文？**
-进游戏 → 选项 → 资源包，「ATM10汉化包」必须启用，**而且在「已选」那一侧的最顶部**。
-
-**模组都是中文，唯独原版的方块 / 物品 / 界面是英文？**
-不是汉化包的问题，是启动器没把原版中文语言文件下全。在启动器里对这个版本跑一次文件补全 / 修复即可。仍不行就删掉 `.minecraft/assets/indexes/<索引号>.json` 再启动。
-
-**Windows 报 `Cannot overwrite the item ... with itself`？**
-你把压缩包内容直接解压到了实例根目录，之后又运行了安装器。汉化其实已经装好了，只差资源包没启用——进游戏手动把它拖到「已选」最顶部即可。
-
-**启动卡好几分钟，日志里一串 `ConnectException`？**
-不是汉化包的事，是 IPv6 连不出去。在启动器的 **JVM 参数**里加一条：
-
-```
--Djava.net.preferIPv4Stack=true
+```bash
+python3 -m venv build/venv-zh_tw
+build/venv-zh_tw/bin/python -m pip install --require-hashes -r requirements-zh_tw.lock
+build/venv-zh_tw/bin/python scripts/zh_tw/fetch_translation.py
+ATM_TW_PYTHON=build/venv-zh_tw/bin/python bash scripts/build_dist.sh r27 8.3 zh_tw build/inputs/atm10-zh_cn-client-r27-atm8.3.zip
 ```
 
-（HMCL 在「游戏特定设置 → Java 虚拟机参数」里填，**改完要重启 HMCL 本身**。或者直接在网卡上关掉 IPv6。）
+下載器只取得鎖定的翻譯資源，不下載 Mod JAR。
+繁中流程不下載或啟動 Minecraft、整合包及遊戲執行環境。
+已有來源與依賴時，可完全離線建置。
 
-**改动不生效？**
-资源包类改动按 **F3+T** 重载；主菜单按钮图、硬编码文本需**完整重启游戏**；任务书需**重进世界 / 重连服务器**。
+預設產物為 `dist/atm10-zh_tw-client-r27-atm8.3.zip`。
+靜態報告位於 `dist/reports/zh_tw-8.3/`。
+檢查涵蓋 JSON、翻譯鍵、格式參數、特殊標記與 ZIP 完整性。
+也會比對任務 ID、依賴與 KubeJS 非文字資料。
+重建檢查會比對 ZIP 位元組與來源檔案雜湊。
+測試命令與同步方式見 [繁中建置說明](docs/zh_tw.md)。
 
-**蜂笼上的蜂名是英文？**
-老蜂笼的名字是抓蜂时烙进 NBT 的，得靠脚本改写。把蜂笼放进背包待几秒自动转正。联机时需要服主装服务端包。**你用命名牌起的名字永远不会被改。**
+## 已知限制
 
-**JEI 里有一行灰色的 `productivebees:xxx`？**
-那是模组给所有语言玩家显示的 ID 行，不是漏翻。
+圖片保留簡中原圖，尚未完成繁體化。
+部分主選單文字位於圖片中，不會隨遊戲語言切換。
+完整圖片清單見建置報告的 `images-manual.json`。
 
-**闪退且不留任何崩溃日志？**
-先把 `mods/jecharacters-*.jar`（JEI 拼音搜索）挪走再试。它会推高启动时的内存峰值，内存紧张的机器可能被系统直接杀掉。它是可选的，不装不影响汉化。
+翻譯包未收錄的模組語言可能回退為英文。
+VaultPatcher 替換表需要既有的相容 VaultPatcher 才能生效。
+多人伺服器同步、動態翻譯鍵與部分任務圖片仍待驗證。
 
-## 仍是英文的部分
+繁中建置只執行靜態驗證，沒有啟動遊戲測試。
+遊戲內載入、排版與搜尋結果需自行確認。
 
-- **CC: Tweaked 电脑终端**——它自带的字形表只有 256 个字符，没有汉字。
-- **模组配置界面**（Create 的「模组配置」列表打开的那些页）。
-- **Sodium「粒子效果」里的原版粒子名**（Cloud / Ash / Crit…）。
-- **建造工具**：第三方建筑包的单个蓝图名、顶部那行 `包名/类别/文件名` 路径。前三层（风格 / 分类 / 子分类）已汉化。
-- **可视性能侦测浮层上的两行计时**。
-- 极少数模组把英文画进了贴图。
+## 授權
 
-发现漏翻 / 错译请[提 Issue](../../issues)，附截图与位置。
+授權依內容區分，詳細範圍見 [LICENSE](LICENSE)。
 
-## 参与与反馈
-
-- 汉化问题（漏翻 / 错译 / 崩溃）→ [Issues](../../issues)
-- 想改译名或贡献翻译、了解仓库结构与构建流程 → [CONTRIBUTING.md](CONTRIBUTING.md)
-- 安全问题 → [SECURITY.md](SECURITY.md)
-
-## 许可证与致谢
-
-授权**按目录拆开**（详见 [LICENSE](LICENSE)）：
-
-| | |
+| 內容 | 授權 |
 |---|---|
-| 代码（`scripts/`、`installer/`、CI） | GPL-3.0-or-later · © 2026 星野夢華 |
-| 译文内容（`src/pack`、`src/config`、`src/kubejs`、`src/vaultpatcher`） | CC BY-NC-SA 4.0 |
-| 随包第三方 jar | 各自许可，许可正文随包 |
+| 建置程式、安裝器與 CI | GPL-3.0-or-later |
+| 簡中上游譯文及其衍生翻譯 | CC BY-NC-SA 4.0 |
+| 第三方素材 | 各自授權，保留上游聲明 |
 
-整理／补译：**星野夢華 (Hoshino Yumeka)**。
-
-致谢：**[十一月の风筝](https://space.bilibili.com/2041176282)**（测试）·
-**[0xyk3r](https://github.com/0xyk3r)**（贡献者）· **BBSMC 汉化组**（早期参考）·
-**All the Mods 团队**（整合包与任务书官方中文）·
-各模组原作者与 CFPA 社区 · **Claude Fable 5**（fable5 老师，我还记得你）。
-
-## Star History
-
-<a href="https://www.star-history.com/?repos=chiba233%2Fatm10-zh-cn&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=chiba233/atm10-zh-cn&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=chiba233/atm10-zh-cn&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=chiba233/atm10-zh-cn&type=date&legend=top-left" />
- </picture>
-</a>
+程式碼授權正文見 [LICENSE-GPL-3.0](LICENSE-GPL-3.0)。
+來源與第三方署名見 [CREDITS.md](CREDITS.md)。
