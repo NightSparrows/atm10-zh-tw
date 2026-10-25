@@ -16,10 +16,10 @@
   },
 
   "Productive Bees 手冊": {
-   "_why": "沿用任務書的「養蜂大全」，統一物品名與任務內的書名。來源：8.3 簡中 Client ZIP 的 productive_bees.snbt 與 productivebees 語言檔。",
-   "蜜蜂大书": "養蜂大全",
-   "蜜蜂大百科": "養蜂大全",
-   "养蜂大全书": "養蜂大全"
+   "_why": "物品名與任務內的書名統一為「養蜂百科」。原文字串見 8.3 簡中 Client ZIP 的 productive_bees.snbt 與 productivebees 語言檔。",
+   "蜜蜂大书": "養蜂百科",
+   "蜜蜂大百科": "養蜂百科",
+   "养蜂大全书": "養蜂百科"
   },
 
   "維度與傳送": {
